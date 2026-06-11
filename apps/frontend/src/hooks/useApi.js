@@ -47,7 +47,7 @@ export default function useApi() {
     try {
       return await safeFetch(`${BACKEND}/webhook/test`, {
         method: 'POST',
-        body: JSON.stringify({ service, severity }),
+        body: JSON.stringify({ service_name: service, severity }),
       });
     } catch (err) {
       console.error('triggerTestIncident failed:', err);

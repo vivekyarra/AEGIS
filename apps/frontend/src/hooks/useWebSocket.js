@@ -4,6 +4,15 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 const BEEP_DATA =
   'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2JkZicoaCbkIB0aGJkaHKAj5yosbi+wL25saaakIWAdXRxcHN4gIiQl52ho6OhnpiSi4R+eXZ1dXd6f4SJjpKWmJmZmJaUkY6LiIaDgYB/f4CAgoOFh4mLjI2Ojo6OjY2MjIuLioqKiomJiYmJiYmJiYqKioqKi4uLi4yMjI2NjY2Ojo6Ojo+Pj4+QkA==';
 
+function getStepId(step) {
+  return [
+    step.incident_id || 'unknown',
+    step.step_number || 'step',
+    step.tool_name || 'tool',
+    step.timestamp || '',
+  ].join(':');
+}
+
 export default function useWebSocket() {
   const [connected, setConnected] = useState(false);
   const [incidents, setIncidents] = useState([]);
@@ -76,14 +85,16 @@ export default function useWebSocket() {
             }
 
             case 'agent_step': {
-              setAgentSteps((prev) => [
-                ...prev.slice(-99),
-                {
-                  id: crypto.randomUUID(),
-                  timestamp: new Date().toISOString(),
-                  ...data.data,
-                },
-              ]);
+              const step = {
+                timestamp: new Date().toISOString(),
+                ...data.data,
+              };
+              step.id = getStepId(step);
+
+              setAgentSteps((prev) => {
+                if (prev.some((existing) => existing.id === step.id)) return prev;
+                return [...prev.slice(-99), step];
+              });
               break;
             }
 

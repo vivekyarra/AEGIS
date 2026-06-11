@@ -29,6 +29,27 @@ const NAV_ITEMS = [
   { to: '/demo', icon: Zap, label: 'Demo Control' },
 ];
 
+function getStepId(incidentId, step) {
+  return [
+    incidentId || 'unknown',
+    step.step_number || 'step',
+    step.tool_name || 'tool',
+    step.timestamp || '',
+  ].join(':');
+}
+
+function flattenIncidentSteps(incidents) {
+  return incidents
+    .flatMap((incident) =>
+      (incident.agent_steps || []).map((step) => ({
+        ...step,
+        incident_id: incident.incident_id || incident.id,
+        id: getStepId(incident.incident_id || incident.id, step),
+      }))
+    )
+    .sort((a, b) => new Date(a.timestamp || 0) - new Date(b.timestamp || 0));
+}
+
 export default function App() {
   const location = useLocation();
   const { connected, incidents, setIncidents, lastEvent, agentSteps, setAgentSteps } =
@@ -39,6 +60,27 @@ export default function App() {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const storedSteps = flattenIncidentSteps(incidents);
+    if (storedSteps.length === 0) return;
+
+    setAgentSteps((prev) => {
+      const seen = new Set(prev.map((step) => step.id));
+      const merged = [...prev];
+
+      storedSteps.forEach((step) => {
+        if (!seen.has(step.id)) {
+          seen.add(step.id);
+          merged.push(step);
+        }
+      });
+
+      return merged
+        .sort((a, b) => new Date(a.timestamp || 0) - new Date(b.timestamp || 0))
+        .slice(-100);
+    });
+  }, [incidents, setAgentSteps]);
 
   return (
     <div className="flex h-screen bg-aegis-darker font-sans text-white overflow-hidden">
