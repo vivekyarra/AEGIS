@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { Component, useState, useEffect } from 'react';
 import {
   BarChart,
   Bar,
@@ -20,11 +20,68 @@ import {
   ShieldAlert,
   Brain,
   Clock,
+  CheckCircle,
 } from 'lucide-react';
 import useApi from '../hooks/useApi';
 
 export default function Analytics({ incidents }) {
+  return (
+    <AnalyticsErrorBoundary>
+      <AnalyticsContent incidents={incidents} />
+    </AnalyticsErrorBoundary>
+  );
+}
+
+class AnalyticsErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <AnalyticsFallback title="Error loading analytics" />;
+    }
+
+    return this.props.children;
+  }
+}
+
+function AnalyticsFallback({ title = 'Analytics unavailable', message }) {
+  return (
+    <div className="min-h-[320px] flex items-center justify-center">
+      <div className="glass-card max-w-lg w-full p-8 text-center border border-aegis-border">
+        <BarChart3 className="w-10 h-10 text-aegis-cyan mx-auto mb-4" />
+        <h2 className="text-lg font-bold uppercase tracking-wide">{title}</h2>
+        <p className="text-sm text-aegis-gray mt-2">
+          {message || 'The dashboard is still online. Analytics will appear when incident telemetry is available.'}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function EmptyChartState({ label }) {
+  return (
+    <div className="h-full min-h-[220px] flex items-center justify-center rounded-lg border border-dashed border-aegis-border bg-aegis-darker/40">
+      <div className="text-center px-6">
+        <Activity className="w-8 h-8 text-aegis-gray mx-auto mb-3" />
+        <p className="text-xs uppercase tracking-wide text-aegis-gray">
+          {label}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function AnalyticsContent({ incidents }) {
   const { fetchStats } = useApi();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [stats, setStats] = useState({
     total: 0,
     resolved: 0,
@@ -33,55 +90,74 @@ export default function Analytics({ incidents }) {
   });
 
   useEffect(() => {
+    let active = true;
+
     async function loadStats() {
-      const data = await fetchStats();
-      if (data) {
+      try {
+        setLoading(true);
+        const data = await fetchStats();
+        if (!active) return;
+
         setStats({
-          total: data.total || 0,
-          resolved: data.resolved || 0,
-          avgResolution: data.avg_resolution_minutes || 15,
-          mostAffected: data.most_affected_service || 'checkout-service',
+          total: data?.total || 0,
+          resolved: data?.resolved || 0,
+          avgResolution: data?.avg_resolution_minutes || 15,
+          mostAffected: data?.most_affected_service || 'checkout-service',
         });
+        setError(null);
+      } catch (err) {
+        if (active) {
+          console.error('loadStats failed:', err);
+          setError(err);
+        }
+      } finally {
+        if (active) setLoading(false);
       }
     }
+
     loadStats();
+
+    return () => {
+      active = false;
+    };
   }, [fetchStats, incidents]);
+
+  try {
+  const data = Array.isArray(incidents) ? incidents : [];
+  const hasIncidentData = data.length > 0;
 
   // 1. Process data for "Incidents by Service" BarChart
   const serviceCounts = {};
-  incidents.forEach((inc) => {
-    inc.affected_services?.forEach((svc) => {
+  data.forEach((inc) => {
+    const affectedServices = Array.isArray(inc?.affected_services)
+      ? inc.affected_services
+      : [];
+
+    affectedServices.forEach((svc) => {
       serviceCounts[svc] = (serviceCounts[svc] || 0) + 1;
     });
   });
 
-  const barData = Object.keys(serviceCounts).map((svc) => ({
+  const barData = Object.keys(serviceCounts || {}).map((svc) => ({
     service: svc,
     incidents: serviceCounts[svc],
   })).sort((a, b) => b.incidents - a.incidents);
 
-  // If no data, supply realistic default service distributions
-  const finalBarData = barData.length > 0 ? barData : [
-    { service: 'checkout-service', incidents: 8 },
-    { service: 'payment-service', incidents: 4 },
-    { service: 'product-service', incidents: 3 },
-    { service: 'order-service', incidents: 2 },
-    { service: 'search-service', incidents: 1 },
-  ];
+  const finalBarData = barData || [];
 
   // 2. Process data for "Severity Distribution" PieChart
   const severityCounts = { P1: 0, P2: 0, P3: 0, P4: 0 };
-  incidents.forEach((inc) => {
-    const sev = inc.severity || 'P2';
+  data.forEach((inc) => {
+    const sev = inc?.severity || 'P2';
     if (severityCounts[sev] !== undefined) {
       severityCounts[sev]++;
     }
   });
 
-  const pieData = Object.keys(severityCounts).map((sev) => ({
+  const pieData = Object.keys(severityCounts || {}).map((sev) => ({
     name: sev,
-    value: severityCounts[sev] || (sev === 'P1' ? 2 : sev === 'P2' ? 5 : 1),
-  }));
+    value: severityCounts[sev] || 0,
+  })).filter((entry) => entry.value > 0);
 
   const SEVERITY_COLORS = {
     P1: '#ff3366', // red
@@ -103,12 +179,20 @@ export default function Analytics({ incidents }) {
   ];
 
   // Calculate Average AI Confidence
-  const confidences = incidents
-    .filter((i) => i.root_cause_confidence)
+  const confidences = data
+    .filter((i) => i?.root_cause_confidence)
     .map((i) => i.root_cause_confidence);
   const avgConfidence = confidences.length > 0
     ? Math.round((confidences.reduce((a, b) => a + b, 0) / confidences.length) * 100)
     : 91;
+
+  if (loading) {
+    return <AnalyticsFallback title="Loading..." message="Loading analytics telemetry." />;
+  }
+
+  if (error) {
+    return <AnalyticsFallback title="Error loading analytics" />;
+  }
 
   return (
     <div className="space-y-6">
@@ -121,6 +205,11 @@ export default function Analytics({ incidents }) {
           <p className="text-xs text-aegis-gray mt-1">
             Historical incident trends, service hotspots, and AI agent diagnostic performance.
           </p>
+          {!hasIncidentData && (
+            <p className="text-xs text-aegis-yellow mt-2">
+              No incident records are available yet. Charts will populate automatically as telemetry arrives.
+            </p>
+          )}
         </div>
       </div>
 
@@ -180,8 +269,11 @@ export default function Analytics({ incidents }) {
             </div>
           </div>
           <div className="flex-1 w-full">
+            {finalBarData.length === 0 ? (
+              <EmptyChartState label="No service incident data yet" />
+            ) : (
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={finalBarData}>
+              <BarChart data={finalBarData || []}>
                 <XAxis
                   dataKey="service"
                   stroke="#64748b"
@@ -206,12 +298,13 @@ export default function Analytics({ incidents }) {
                   }}
                 />
                 <Bar dataKey="incidents" fill="#00d4ff" radius={[4, 4, 0, 0]}>
-                  {finalBarData.map((entry, index) => (
+                  {(finalBarData || []).map((entry, index) => (
                     <Cell key={`cell-${index}`} fill="#00d4ff" fillOpacity={0.8 - index * 0.1} />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
+            )}
           </div>
         </div>
 
@@ -226,17 +319,20 @@ export default function Analytics({ incidents }) {
             </div>
           </div>
           <div className="flex-1 flex items-center justify-center relative">
+            {pieData.length === 0 ? (
+              <EmptyChartState label="No severity distribution yet" />
+            ) : (
             <div className="w-[60%] h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={pieData}
+                    data={pieData || []}
                     innerRadius={55}
                     outerRadius={75}
                     paddingAngle={3}
                     dataKey="value"
                   >
-                    {pieData.map((entry) => (
+                    {(pieData || []).map((entry) => (
                       <Cell
                         key={`cell-${entry.name}`}
                         fill={SEVERITY_COLORS[entry.name] || '#00d4ff'}
@@ -255,6 +351,7 @@ export default function Analytics({ incidents }) {
                 </PieChart>
               </ResponsiveContainer>
             </div>
+            )}
           </div>
         </div>
 
@@ -274,7 +371,7 @@ export default function Analytics({ incidents }) {
           </div>
           <div className="flex-1 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={lineData}>
+              <LineChart data={lineData || []}>
                 <XAxis
                   dataKey="day"
                   stroke="#64748b"
@@ -314,4 +411,8 @@ export default function Analytics({ incidents }) {
       </div>
     </div>
   );
+  } catch (err) {
+    console.error('Analytics render failed:', err);
+    return <AnalyticsFallback title="Error loading analytics" />;
+  }
 }
