@@ -49,7 +49,7 @@ fi
 
 # Defaults
 MONGODB_DB="${MONGODB_DB:-aegis}"
-SHOPSTREAM_SERVICE="sentinel-shopstream"
+SHOPSTREAM_SERVICE="aegis-shopstream"
 BACKEND_SERVICE="aegis-backend"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 

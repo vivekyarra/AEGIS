@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        sentinel: {
+        aegis: {
           dark: '#0a0e1a',
           darker: '#060912',
           card: '#0f1629',

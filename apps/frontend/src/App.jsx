@@ -41,21 +41,21 @@ export default function App() {
   }, []);
 
   return (
-    <div className="flex h-screen bg-sentinel-darker font-sans text-white overflow-hidden">
+    <div className="flex h-screen bg-aegis-darker font-sans text-white overflow-hidden">
       {/* ── Sidebar ──────────────────────────────────── */}
-      <aside className="w-[240px] flex-shrink-0 flex flex-col bg-sentinel-dark border-r border-sentinel-border">
+      <aside className="w-[240px] flex-shrink-0 flex flex-col bg-aegis-dark border-r border-aegis-border">
         {/* Logo */}
-        <div className="px-5 py-6 border-b border-sentinel-border">
+        <div className="px-5 py-6 border-b border-aegis-border">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Shield className="w-8 h-8 text-sentinel-cyan" />
+              <Shield className="w-8 h-8 text-aegis-cyan" />
               <div className="absolute inset-0 animate-glow rounded-full" />
             </div>
             <div>
               <h1 className="text-lg font-bold tracking-wide gradient-text">
                 AEGIS
               </h1>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-sentinel-gray">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-aegis-gray">
                 Autonomous Response
               </p>
             </div>
@@ -76,7 +76,7 @@ export default function App() {
                 className={clsx(
                   'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
                   isActive
-                    ? 'bg-sentinel-cyan/10 text-sentinel-cyan border border-sentinel-cyan/20 shadow-[0_0_15px_rgba(0,212,255,0.08)]'
+                    ? 'bg-aegis-cyan/10 text-aegis-cyan border border-aegis-cyan/20 shadow-[0_0_15px_rgba(0,212,255,0.08)]'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
                 )}
               >
@@ -88,19 +88,19 @@ export default function App() {
         </nav>
 
         {/* Connection status */}
-        <div className="px-5 py-4 border-t border-sentinel-border">
+        <div className="px-5 py-4 border-t border-aegis-border">
           <div className="flex items-center gap-2 text-xs">
             {connected ? (
               <>
-                <Wifi className="w-3.5 h-3.5 text-sentinel-green" />
-                <span className="text-sentinel-green font-medium">Connected</span>
-                <span className="ml-auto w-2 h-2 rounded-full bg-sentinel-green animate-pulse" />
+                <Wifi className="w-3.5 h-3.5 text-aegis-green" />
+                <span className="text-aegis-green font-medium">Connected</span>
+                <span className="ml-auto w-2 h-2 rounded-full bg-aegis-green animate-pulse" />
               </>
             ) : (
               <>
-                <WifiOff className="w-3.5 h-3.5 text-sentinel-red" />
-                <span className="text-sentinel-red font-medium">Disconnected</span>
-                <span className="ml-auto w-2 h-2 rounded-full bg-sentinel-red animate-pulse-red" />
+                <WifiOff className="w-3.5 h-3.5 text-aegis-red" />
+                <span className="text-aegis-red font-medium">Disconnected</span>
+                <span className="ml-auto w-2 h-2 rounded-full bg-aegis-red animate-pulse-red" />
               </>
             )}
           </div>
@@ -110,7 +110,7 @@ export default function App() {
       {/* ── Main area ────────────────────────────────── */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top bar */}
-        <header className="h-12 flex-shrink-0 flex items-center justify-between px-6 border-b border-sentinel-border bg-sentinel-dark/60 backdrop-blur-md">
+        <header className="h-12 flex-shrink-0 flex items-center justify-between px-6 border-b border-aegis-border bg-aegis-dark/60 backdrop-blur-md">
           <div className="flex items-center gap-3">
             <span className="text-sm text-gray-400">
               {format(time, 'EEE, MMM d · HH:mm:ss')}
@@ -121,7 +121,7 @@ export default function App() {
               <span
                 className={clsx(
                   'w-2 h-2 rounded-full',
-                  connected ? 'bg-sentinel-green' : 'bg-sentinel-red animate-pulse-red'
+                  connected ? 'bg-aegis-green' : 'bg-aegis-red animate-pulse-red'
                 )}
               />
               <span className="text-gray-400">

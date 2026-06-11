@@ -135,12 +135,12 @@ export default function AgentMonitor({ incidents, agentSteps }) {
   return (
     <div className="space-y-6">
       {/* ── Header ───────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-sentinel-border pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-aegis-border pb-4">
         <div>
           <h2 className="text-xl font-bold uppercase tracking-wide">
             Agent Diagnostics Monitor
           </h2>
-          <p className="text-xs text-sentinel-gray mt-1">
+          <p className="text-xs text-aegis-gray mt-1">
             Analyze the internal execution efficiency, tool invocations, and thinking pipeline of AEGIS.
           </p>
         </div>
@@ -150,8 +150,8 @@ export default function AgentMonitor({ incidents, agentSteps }) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Tool Call Frequency Bar Chart */}
         <div className="glass-card p-6 flex flex-col h-[360px] lg:col-span-2">
-          <div className="flex items-center gap-3 border-b border-sentinel-border pb-3 mb-5">
-            <Cpu className="w-5 h-5 text-sentinel-cyan" />
+          <div className="flex items-center gap-3 border-b border-aegis-border pb-3 mb-5">
+            <Cpu className="w-5 h-5 text-aegis-cyan" />
             <h4 className="font-bold text-sm uppercase tracking-wide">
               Agent Tool Call Frequency
             </h4>
@@ -197,8 +197,8 @@ export default function AgentMonitor({ incidents, agentSteps }) {
 
         {/* Performance Metrics Card */}
         <div className="glass-card p-6 flex flex-col justify-between h-[360px]">
-          <div className="flex items-center gap-3 border-b border-sentinel-border pb-3 mb-5">
-            <ActivityIcon className="w-5 h-5 text-sentinel-cyan" />
+          <div className="flex items-center gap-3 border-b border-aegis-border pb-3 mb-5">
+            <ActivityIcon className="w-5 h-5 text-aegis-cyan" />
             <h4 className="font-bold text-sm uppercase tracking-wide">
               Agent Performance Stats
             </h4>
@@ -206,27 +206,27 @@ export default function AgentMonitor({ incidents, agentSteps }) {
 
           <div className="flex-1 space-y-6">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-sentinel-gray">
+              <div className="flex items-center gap-2 text-xs text-aegis-gray">
                 <Clock className="w-4 h-4" />
                 <span>Avg Latency per Tool Call</span>
               </div>
-              <span className="font-mono text-lg font-bold text-sentinel-cyan">
+              <span className="font-mono text-lg font-bold text-aegis-cyan">
                 {avgLatencyPerStep}ms
               </span>
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-sentinel-gray">
+              <div className="flex items-center gap-2 text-xs text-aegis-gray">
                 <Compass className="w-4 h-4" />
                 <span>Autonomy Level</span>
               </div>
-              <span className="font-mono text-xs font-bold text-sentinel-green bg-sentinel-green/10 border border-sentinel-green/20 px-2 py-0.5 rounded uppercase">
+              <span className="font-mono text-xs font-bold text-aegis-green bg-aegis-green/10 border border-aegis-green/20 px-2 py-0.5 rounded uppercase">
                 100% Autonomous
               </span>
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-sentinel-gray">
+              <div className="flex items-center gap-2 text-xs text-aegis-gray">
                 <TerminalIcon className="w-4 h-4" />
                 <span>Toolsets Registered</span>
               </div>
@@ -234,11 +234,11 @@ export default function AgentMonitor({ incidents, agentSteps }) {
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-sentinel-gray">
+              <div className="flex items-center gap-2 text-xs text-aegis-gray">
                 <BrainIcon className="w-4 h-4" />
                 <span>Reasoning Model</span>
               </div>
-              <span className="font-mono text-xs font-bold text-sentinel-purple bg-sentinel-purple/10 border border-sentinel-purple/20 px-2 py-0.5 rounded">
+              <span className="font-mono text-xs font-bold text-aegis-purple bg-aegis-purple/10 border border-aegis-purple/20 px-2 py-0.5 rounded">
                 Gemini 2.0 Flash
               </span>
             </div>
@@ -248,7 +248,7 @@ export default function AgentMonitor({ incidents, agentSteps }) {
 
       {/* ── Expandable Investigation Trace History ─── */}
       <div className="space-y-4">
-        <h4 className="font-bold text-sm uppercase tracking-wide border-b border-sentinel-border pb-2">
+        <h4 className="font-bold text-sm uppercase tracking-wide border-b border-aegis-border pb-2">
           Agent Investigation Trace History
         </h4>
 
@@ -260,17 +260,17 @@ export default function AgentMonitor({ incidents, agentSteps }) {
                 {/* Header Row */}
                 <div
                   onClick={() => toggleExpand(inc.incident_id)}
-                  className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-sentinel-darker/35 border-b border-sentinel-border/40 cursor-pointer hover:bg-sentinel-cyan/[0.01]"
+                  className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-aegis-darker/35 border-b border-aegis-border/40 cursor-pointer hover:bg-aegis-cyan/[0.01]"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 text-xs">
-                      <span className="font-mono font-bold text-sentinel-cyan">
+                      <span className="font-mono font-bold text-aegis-cyan">
                         {inc.incident_id}
                       </span>
-                      <span className="text-sentinel-gray font-mono">
+                      <span className="text-aegis-gray font-mono">
                         {(inc.total_investigation_ms / 1000).toFixed(2)}s Latency
                       </span>
-                      <span className="text-sentinel-gray font-mono">
+                      <span className="text-aegis-gray font-mono">
                         {inc.agent_steps?.length || 0} Steps
                       </span>
                     </div>
@@ -278,27 +278,27 @@ export default function AgentMonitor({ incidents, agentSteps }) {
                   </div>
 
                   <div className="flex items-center gap-4 mt-2 md:mt-0">
-                    <div className="flex items-center gap-2 bg-sentinel-cyan/10 border border-sentinel-cyan/20 px-2 py-0.5 rounded text-xs text-sentinel-cyan font-mono">
+                    <div className="flex items-center gap-2 bg-aegis-cyan/10 border border-aegis-cyan/20 px-2 py-0.5 rounded text-xs text-aegis-cyan font-mono">
                       <span>Confidence:</span>
                       <span className="font-bold">
                         {Math.round((inc.root_cause_confidence || 0.9) * 100)}%
                       </span>
                     </div>
                     {isExpanded ? (
-                      <ChevronUp className="w-5 h-5 text-sentinel-gray" />
+                      <ChevronUp className="w-5 h-5 text-aegis-gray" />
                     ) : (
-                      <ChevronDown className="w-5 h-5 text-sentinel-gray" />
+                      <ChevronDown className="w-5 h-5 text-aegis-gray" />
                     )}
                   </div>
                 </div>
 
                 {/* Expanded Trace Details */}
                 {isExpanded && (
-                  <div className="p-6 bg-sentinel-darker/60 border-t border-sentinel-border/40 space-y-5">
-                    <div className="relative border-l border-sentinel-border/50 ml-3.5 pl-6 space-y-6">
+                  <div className="p-6 bg-aegis-darker/60 border-t border-aegis-border/40 space-y-5">
+                    <div className="relative border-l border-aegis-border/50 ml-3.5 pl-6 space-y-6">
                       {inc.agent_steps.map((step) => (
                         <div key={step.step_number} className="relative slide-in">
-                          <span className="absolute -left-[35px] top-0.5 flex items-center justify-center w-5 h-5 rounded-full bg-sentinel-dark border border-sentinel-border text-[10px] font-bold text-sentinel-cyan">
+                          <span className="absolute -left-[35px] top-0.5 flex items-center justify-center w-5 h-5 rounded-full bg-aegis-dark border border-aegis-border text-[10px] font-bold text-aegis-cyan">
                             {step.step_number}
                           </span>
 
@@ -307,20 +307,20 @@ export default function AgentMonitor({ incidents, agentSteps }) {
                               <span className="font-bold text-white font-mono">
                                 {step.tool_name}
                               </span>
-                              <span className="font-mono text-[9px] px-1.5 py-0.2 rounded bg-white/5 text-sentinel-gray border border-white/5">
+                              <span className="font-mono text-[9px] px-1.5 py-0.2 rounded bg-white/5 text-aegis-gray border border-white/5">
                                 {step.latency_ms}ms
                               </span>
                             </div>
 
-                            <div className="bg-black/25 p-2 rounded border border-sentinel-border/30 text-[10px]">
+                            <div className="bg-black/25 p-2 rounded border border-aegis-border/30 text-[10px]">
                               <div>
-                                <span className="text-sentinel-yellow font-semibold">Args:</span>{' '}
+                                <span className="text-aegis-yellow font-semibold">Args:</span>{' '}
                                 <code className="text-gray-300 font-mono">
                                   {JSON.stringify(step.tool_input)}
                                 </code>
                               </div>
-                              <div className="mt-1 border-t border-sentinel-border/20 pt-1">
-                                <span className="text-sentinel-gray font-semibold">Result:</span>
+                              <div className="mt-1 border-t border-aegis-border/20 pt-1">
+                                <span className="text-aegis-gray font-semibold">Result:</span>
                                 <p className="text-gray-400 font-mono mt-0.5 max-h-24 overflow-y-auto">
                                   {step.tool_output}
                                 </p>

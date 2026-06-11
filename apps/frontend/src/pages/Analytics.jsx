@@ -113,12 +113,12 @@ export default function Analytics({ incidents }) {
   return (
     <div className="space-y-6">
       {/* ── Header ───────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-sentinel-border pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-aegis-border pb-4">
         <div>
           <h2 className="text-xl font-bold uppercase tracking-wide">
             Telemetry & AI Analytics
           </h2>
-          <p className="text-xs text-sentinel-gray mt-1">
+          <p className="text-xs text-aegis-gray mt-1">
             Historical incident trends, service hotspots, and AI agent diagnostic performance.
           </p>
         </div>
@@ -127,25 +127,25 @@ export default function Analytics({ incidents }) {
       {/* ── Mini Cards ───────────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div className="glass-card p-5 flex items-center gap-4">
-          <div className="p-3 bg-sentinel-green/10 border border-sentinel-green/20 rounded-lg">
-            <CheckCircle className="w-6 h-6 text-sentinel-green" />
+          <div className="p-3 bg-aegis-green/10 border border-aegis-green/20 rounded-lg">
+            <CheckCircle className="w-6 h-6 text-aegis-green" />
           </div>
           <div>
-            <span className="text-[10px] uppercase font-bold text-sentinel-gray tracking-wider">
+            <span className="text-[10px] uppercase font-bold text-aegis-gray tracking-wider">
               Total Resolved
             </span>
             <h4 className="text-2xl font-bold mt-1 font-mono">
-              {stats.resolved} <span className="text-xs text-sentinel-gray">/ {stats.total}</span>
+              {stats.resolved} <span className="text-xs text-aegis-gray">/ {stats.total}</span>
             </h4>
           </div>
         </div>
 
         <div className="glass-card p-5 flex items-center gap-4">
-          <div className="p-3 bg-sentinel-cyan/10 border border-sentinel-cyan/20 rounded-lg">
-            <Brain className="w-6 h-6 text-sentinel-cyan" />
+          <div className="p-3 bg-aegis-cyan/10 border border-aegis-cyan/20 rounded-lg">
+            <Brain className="w-6 h-6 text-aegis-cyan" />
           </div>
           <div>
-            <span className="text-[10px] uppercase font-bold text-sentinel-gray tracking-wider">
+            <span className="text-[10px] uppercase font-bold text-aegis-gray tracking-wider">
               Average AI Confidence
             </span>
             <h4 className="text-2xl font-bold mt-1 font-mono">{avgConfidence}%</h4>
@@ -153,11 +153,11 @@ export default function Analytics({ incidents }) {
         </div>
 
         <div className="glass-card p-5 flex items-center gap-4">
-          <div className="p-3 bg-sentinel-yellow/10 border border-sentinel-yellow/20 rounded-lg">
-            <ShieldAlert className="w-6 h-6 text-sentinel-yellow" />
+          <div className="p-3 bg-aegis-yellow/10 border border-aegis-yellow/20 rounded-lg">
+            <ShieldAlert className="w-6 h-6 text-aegis-yellow" />
           </div>
           <div>
-            <span className="text-[10px] uppercase font-bold text-sentinel-gray tracking-wider">
+            <span className="text-[10px] uppercase font-bold text-aegis-gray tracking-wider">
               Service Hotspot
             </span>
             <h4 className="text-md font-bold mt-1 font-mono truncate max-w-[190px]">
@@ -171,9 +171,9 @@ export default function Analytics({ incidents }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Bar Chart: Incidents by Service */}
         <div className="glass-card p-6 flex flex-col h-[360px]">
-          <div className="flex items-center justify-between mb-5 border-b border-sentinel-border pb-3">
+          <div className="flex items-center justify-between mb-5 border-b border-aegis-border pb-3">
             <div className="flex items-center gap-3">
-              <BarChart3 className="w-5 h-5 text-sentinel-cyan" />
+              <BarChart3 className="w-5 h-5 text-aegis-cyan" />
               <h4 className="font-bold tracking-wide text-sm uppercase">
                 Incident Frequency by Service
               </h4>
@@ -217,9 +217,9 @@ export default function Analytics({ incidents }) {
 
         {/* Pie Chart: Severity Distribution */}
         <div className="glass-card p-6 flex flex-col h-[360px]">
-          <div className="flex items-center justify-between mb-5 border-b border-sentinel-border pb-3">
+          <div className="flex items-center justify-between mb-5 border-b border-aegis-border pb-3">
             <div className="flex items-center gap-3">
-              <Activity className="w-5 h-5 text-sentinel-red" />
+              <Activity className="w-5 h-5 text-aegis-red" />
               <h4 className="font-bold tracking-wide text-sm uppercase">
                 Severity Distribution
               </h4>
@@ -260,14 +260,14 @@ export default function Analytics({ incidents }) {
 
         {/* Line Chart: MTTR Trend */}
         <div className="glass-card p-6 flex flex-col h-[360px] lg:col-span-2">
-          <div className="flex items-center justify-between mb-5 border-b border-sentinel-border pb-3">
+          <div className="flex items-center justify-between mb-5 border-b border-aegis-border pb-3">
             <div className="flex items-center gap-3">
-              <Clock className="w-5 h-5 text-sentinel-green" />
+              <Clock className="w-5 h-5 text-aegis-green" />
               <h4 className="font-bold tracking-wide text-sm uppercase">
                 Mean Time to Resolution trend (MTTR)
               </h4>
             </div>
-            <div className="flex items-center gap-1 bg-sentinel-green/10 border border-sentinel-green/20 px-2 py-0.5 rounded text-[10px] text-sentinel-green font-mono">
+            <div className="flex items-center gap-1 bg-aegis-green/10 border border-aegis-green/20 px-2 py-0.5 rounded text-[10px] text-aegis-green font-mono">
               <TrendingUp className="w-3.5 h-3.5" />
               <span>-46% over 30 days</span>
             </div>

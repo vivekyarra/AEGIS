@@ -48,15 +48,15 @@ body {
 /* ── Utility layers ────────────────────────────────── */
 @layer components {
   .glass {
-    @apply bg-sentinel-card/80 backdrop-blur-xl border border-sentinel-border rounded-xl;
+    @apply bg-aegis-card/80 backdrop-blur-xl border border-aegis-border rounded-xl;
   }
 
   .glass-card {
-    @apply bg-sentinel-card/70 backdrop-blur-xl border border-sentinel-border rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)];
+    @apply bg-aegis-card/70 backdrop-blur-xl border border-aegis-border rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)];
   }
 
   .glass-strong {
-    @apply bg-sentinel-card/90 backdrop-blur-2xl border border-sentinel-border rounded-xl shadow-lg shadow-black/20;
+    @apply bg-aegis-card/90 backdrop-blur-2xl border border-aegis-border rounded-xl shadow-lg shadow-black/20;
   }
 
   .neon-text {
@@ -68,7 +68,7 @@ body {
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-sentinel-cyan to-sentinel-blue;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-aegis-cyan to-aegis-blue;
   }
 }
 

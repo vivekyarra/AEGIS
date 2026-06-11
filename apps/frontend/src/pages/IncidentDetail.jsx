@@ -63,7 +63,7 @@ export default function IncidentDetail({ incidents }) {
 
   if (loading && !incident) {
     return (
-      <div className="h-64 flex items-center justify-center text-sentinel-cyan">
+      <div className="h-64 flex items-center justify-center text-aegis-cyan">
         <div className="relative">
           <Shield className="w-10 h-10 animate-pulse" />
           <div className="absolute inset-0 animate-glow rounded-full" />
@@ -76,9 +76,9 @@ export default function IncidentDetail({ incidents }) {
   if (!incident) {
     return (
       <div className="text-center p-12 glass-card">
-        <AlertTriangle className="w-12 h-12 text-sentinel-red mx-auto mb-4" />
+        <AlertTriangle className="w-12 h-12 text-aegis-red mx-auto mb-4" />
         <h3 className="text-lg font-bold">Incident Not Found</h3>
-        <p className="text-sm text-sentinel-gray mt-1">
+        <p className="text-sm text-aegis-gray mt-1">
           The requested incident ID '{id}' could not be located.
         </p>
         <button
@@ -96,23 +96,23 @@ export default function IncidentDetail({ incidents }) {
   const isInvestigating = incident.status === 'investigating';
 
   const severityColors = {
-    P1: 'border-sentinel-red/30 bg-sentinel-red/10 text-sentinel-red',
-    P2: 'border-sentinel-yellow/30 bg-sentinel-yellow/10 text-sentinel-yellow',
-    P3: 'border-sentinel-blue/30 bg-sentinel-blue/10 text-sentinel-blue',
-    P4: 'border-sentinel-gray/30 bg-sentinel-gray/10 text-sentinel-gray',
+    P1: 'border-aegis-red/30 bg-aegis-red/10 text-aegis-red',
+    P2: 'border-aegis-yellow/30 bg-aegis-yellow/10 text-aegis-yellow',
+    P3: 'border-aegis-blue/30 bg-aegis-blue/10 text-aegis-blue',
+    P4: 'border-aegis-gray/30 bg-aegis-gray/10 text-aegis-gray',
   };
 
   const statusColors = {
-    detected: 'bg-sentinel-red/10 border-sentinel-red/30 text-sentinel-red',
-    investigating: 'bg-sentinel-blue/10 border-sentinel-blue/30 text-sentinel-blue animate-pulse',
-    root_cause_found: 'bg-sentinel-cyan/10 border-sentinel-cyan/30 text-sentinel-cyan',
-    resolved: 'bg-sentinel-green/10 border-sentinel-green/30 text-sentinel-green',
+    detected: 'bg-aegis-red/10 border-aegis-red/30 text-aegis-red',
+    investigating: 'bg-aegis-blue/10 border-aegis-blue/30 text-aegis-blue animate-pulse',
+    root_cause_found: 'bg-aegis-cyan/10 border-aegis-cyan/30 text-aegis-cyan',
+    resolved: 'bg-aegis-green/10 border-aegis-green/30 text-aegis-green',
   };
 
   return (
     <div className="space-y-6">
       {/* ── Header Bar ───────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-sentinel-border pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-aegis-border pb-4">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate(-1)}
@@ -140,7 +140,7 @@ export default function IncidentDetail({ incidents }) {
                 {incident.status?.replace('_', ' ')}
               </span>
             </div>
-            <p className="text-xs text-sentinel-gray mt-1">
+            <p className="text-xs text-aegis-gray mt-1">
               Started: {new Date(incident.started_at).toLocaleString()}
             </p>
           </div>
@@ -148,7 +148,7 @@ export default function IncidentDetail({ incidents }) {
 
         {/* Resolved Timestamp */}
         {isResolved && (
-          <div className="flex items-center gap-2 bg-sentinel-green/10 border border-sentinel-green/20 px-3 py-1.5 rounded-lg text-xs text-sentinel-green font-semibold">
+          <div className="flex items-center gap-2 bg-aegis-green/10 border border-aegis-green/20 px-3 py-1.5 rounded-lg text-xs text-aegis-green font-semibold">
             <CheckCircle className="w-4 h-4" />
             <span>Resolved at {new Date(incident.resolved_at).toLocaleTimeString()}</span>
           </div>
@@ -157,14 +157,14 @@ export default function IncidentDetail({ incidents }) {
 
       {/* ── Banner: AI completed analysis ────────────── */}
       {(incident.root_cause || isResolved) && (
-        <div className="bg-sentinel-green/5 border border-sentinel-green/20 p-4 rounded-lg flex items-center justify-between gap-4 slide-in">
+        <div className="bg-aegis-green/5 border border-aegis-green/20 p-4 rounded-lg flex items-center justify-between gap-4 slide-in">
           <div className="flex items-center gap-3">
-            <Shield className="w-5 h-5 text-sentinel-green animate-pulse" />
+            <Shield className="w-5 h-5 text-aegis-green animate-pulse" />
             <div>
               <h4 className="font-bold text-sm text-white">
                 AEGIS INVESTIGATION COMPLETE
               </h4>
-              <p className="text-xs text-sentinel-gray">
+              <p className="text-xs text-aegis-gray">
                 Root cause identified and remediation strategy generated in{' '}
                 {incident.total_investigation_ms
                   ? `${(incident.total_investigation_ms / 1000).toFixed(1)}s`
@@ -182,16 +182,16 @@ export default function IncidentDetail({ incidents }) {
         <div className="lg:col-span-2 space-y-6">
           {/* 1. Root Cause */}
           {incident.root_cause && (
-            <div className="glass-card p-6 border-l-4 border-l-sentinel-blue relative overflow-hidden group">
+            <div className="glass-card p-6 border-l-4 border-l-aegis-blue relative overflow-hidden group">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Brain className="w-5 h-5 text-sentinel-cyan" />
+                  <Brain className="w-5 h-5 text-aegis-cyan" />
                   <h4 className="font-bold text-sm uppercase tracking-wide">
                     Root Cause Analysis
                   </h4>
                 </div>
                 {incident.root_cause_confidence && (
-                  <div className="flex items-center gap-2 bg-sentinel-cyan/10 border border-sentinel-cyan/20 px-2.5 py-1 rounded text-xs text-sentinel-cyan font-mono">
+                  <div className="flex items-center gap-2 bg-aegis-cyan/10 border border-aegis-cyan/20 px-2.5 py-1 rounded text-xs text-aegis-cyan font-mono">
                     <span>Confidence:</span>
                     <span className="font-bold">
                       {Math.round(incident.root_cause_confidence * 100)}%
@@ -203,7 +203,7 @@ export default function IncidentDetail({ incidents }) {
                 {incident.root_cause}
               </p>
               {incident.impact_summary && (
-                <div className="mt-4 pt-3 border-t border-sentinel-border text-xs text-sentinel-gray bg-black/20 p-2.5 rounded">
+                <div className="mt-4 pt-3 border-t border-aegis-border text-xs text-aegis-gray bg-black/20 p-2.5 rounded">
                   <span className="font-semibold text-gray-300">Impact:</span>{' '}
                   {incident.impact_summary}
                 </div>
@@ -213,16 +213,16 @@ export default function IncidentDetail({ incidents }) {
 
           {/* 2. recommended fix & action button */}
           {incident.recommended_fix && (
-            <div className="glass-card p-6 border-l-4 border-l-sentinel-green">
+            <div className="glass-card p-6 border-l-4 border-l-aegis-green">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Zap className="w-5 h-5 text-sentinel-green" />
+                  <Zap className="w-5 h-5 text-aegis-green" />
                   <h4 className="font-bold text-sm uppercase tracking-wide">
                     Recommended Remediation
                   </h4>
                 </div>
               </div>
-              <p className="text-sm leading-relaxed text-gray-200 bg-sentinel-darker/60 p-4 rounded-lg font-mono border border-sentinel-border mb-5">
+              <p className="text-sm leading-relaxed text-gray-200 bg-aegis-darker/60 p-4 rounded-lg font-mono border border-aegis-border mb-5">
                 {incident.recommended_fix}
               </p>
 
@@ -231,7 +231,7 @@ export default function IncidentDetail({ incidents }) {
                 <button
                   onClick={handleApproveFix}
                   disabled={actionLoading || isInvestigating}
-                  className="w-full py-3 bg-sentinel-green hover:bg-sentinel-green/90 active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none rounded-lg text-sentinel-darker font-bold text-sm transition-all shadow-[0_0_20px_rgba(0,255,136,0.2)] flex items-center justify-center gap-2 uppercase tracking-wider"
+                  className="w-full py-3 bg-aegis-green hover:bg-aegis-green/90 active:scale-[0.99] disabled:opacity-50 disabled:pointer-events-none rounded-lg text-aegis-darker font-bold text-sm transition-all shadow-[0_0_20px_rgba(0,255,136,0.2)] flex items-center justify-center gap-2 uppercase tracking-wider"
                 >
                   {actionLoading ? (
                     <>
@@ -246,7 +246,7 @@ export default function IncidentDetail({ incidents }) {
                   )}
                 </button>
               ) : (
-                <div className="flex items-center justify-center p-3.5 bg-sentinel-green/10 border border-sentinel-green/20 rounded-lg text-sm text-sentinel-green font-bold uppercase tracking-wider gap-2">
+                <div className="flex items-center justify-center p-3.5 bg-aegis-green/10 border border-aegis-green/20 rounded-lg text-sm text-aegis-green font-bold uppercase tracking-wider gap-2">
                   <CheckCircle className="w-5 h-5" />
                   Remediation successfully applied
                 </div>
@@ -256,22 +256,22 @@ export default function IncidentDetail({ incidents }) {
 
           {/* 3. Culprit Commit */}
           {incident.culprit_commit && (
-            <div className="glass-card p-6 border-l-4 border-l-sentinel-yellow">
+            <div className="glass-card p-6 border-l-4 border-l-aegis-yellow">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <GitCommit className="w-5 h-5 text-sentinel-yellow" />
+                  <GitCommit className="w-5 h-5 text-aegis-yellow" />
                   <h4 className="font-bold text-sm uppercase tracking-wide">
                     Culprit Code Deployment
                   </h4>
                 </div>
-                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-sentinel-yellow/10 border border-sentinel-yellow/20 text-sentinel-yellow">
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-aegis-yellow/10 border border-aegis-yellow/20 text-aegis-yellow">
                   Deployment Match
                 </span>
               </div>
 
-              <div className="bg-sentinel-darker/50 p-4 rounded-lg border border-sentinel-border space-y-3">
+              <div className="bg-aegis-darker/50 p-4 rounded-lg border border-aegis-border space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-sentinel-gray font-mono">
+                  <span className="text-xs text-aegis-gray font-mono">
                     SHA: {incident.culprit_commit.sha}
                   </span>
                   {incident.culprit_commit.url && (
@@ -279,7 +279,7 @@ export default function IncidentDetail({ incidents }) {
                       href={incident.culprit_commit.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-sentinel-cyan hover:underline flex items-center gap-1 font-mono"
+                      className="text-xs text-aegis-cyan hover:underline flex items-center gap-1 font-mono"
                     >
                       GitLab <ExternalLink className="w-3 h-3" />
                     </a>
@@ -288,7 +288,7 @@ export default function IncidentDetail({ incidents }) {
                 <h5 className="font-semibold text-sm text-white">
                   "{incident.culprit_commit.message?.split('\n')[0]}"
                 </h5>
-                <div className="flex items-center gap-4 text-xs text-sentinel-gray font-mono">
+                <div className="flex items-center gap-4 text-xs text-aegis-gray font-mono">
                   <span>Author: {incident.culprit_commit.author}</span>
                   <span>
                     Deployed:{' '}
@@ -302,8 +302,8 @@ export default function IncidentDetail({ incidents }) {
           {/* 4. Similar past incidents */}
           {incident.similar_past_incidents && incident.similar_past_incidents.length > 0 && (
             <div className="glass-card p-6 space-y-4">
-              <div className="flex items-center gap-3 border-b border-sentinel-border pb-3 mb-1">
-                <History className="w-5 h-5 text-sentinel-purple" />
+              <div className="flex items-center gap-3 border-b border-aegis-border pb-3 mb-1">
+                <History className="w-5 h-5 text-aegis-purple" />
                 <h4 className="font-bold text-sm uppercase tracking-wide">
                   Historical Incident Correlation
                 </h4>
@@ -313,14 +313,14 @@ export default function IncidentDetail({ incidents }) {
                 {incident.similar_past_incidents.map((past, idx) => (
                   <div
                     key={past.id || idx}
-                    className="p-4 rounded-lg bg-sentinel-darker/40 border border-sentinel-border space-y-2.5 text-xs"
+                    className="p-4 rounded-lg bg-aegis-darker/40 border border-aegis-border space-y-2.5 text-xs"
                   >
-                    <div className="flex justify-between items-center border-b border-sentinel-border/30 pb-1.5">
-                      <span className="font-mono text-sentinel-purple font-bold">
+                    <div className="flex justify-between items-center border-b border-aegis-border/30 pb-1.5">
+                      <span className="font-mono text-aegis-purple font-bold">
                         {past.id}
                       </span>
                       {past.resolution_time_minutes && (
-                        <span className="text-sentinel-gray font-mono">
+                        <span className="text-aegis-gray font-mono">
                           Resolved in {past.resolution_time_minutes}m
                         </span>
                       )}
@@ -346,22 +346,22 @@ export default function IncidentDetail({ incidents }) {
 
         {/* Right Column: Agent Investigation Trace Timeline (1/3 width) */}
         <div className="glass-card p-6 flex flex-col h-fit">
-          <div className="flex items-center gap-3 border-b border-sentinel-border pb-3 mb-5">
-            <Terminal className="w-5 h-5 text-sentinel-cyan" />
+          <div className="flex items-center gap-3 border-b border-aegis-border pb-3 mb-5">
+            <Terminal className="w-5 h-5 text-aegis-cyan" />
             <h4 className="font-bold text-sm uppercase tracking-wide">
               Agent Investigation Trace
             </h4>
           </div>
 
-          <div className="relative border-l border-sentinel-border/60 ml-3.5 pl-6 space-y-6">
+          <div className="relative border-l border-aegis-border/60 ml-3.5 pl-6 space-y-6">
             {isInvestigating && incident.agent_steps?.length === 0 && (
-              <div className="text-xs text-sentinel-cyan animate-pulse py-2">
+              <div className="text-xs text-aegis-cyan animate-pulse py-2">
                 Agent booting up toolset models...
               </div>
             )}
             
             {incident.agent_steps?.length === 0 && !isInvestigating && (
-              <div className="text-xs text-sentinel-gray py-2">
+              <div className="text-xs text-aegis-gray py-2">
                 No telemetry traces recorded.
               </div>
             )}
@@ -371,7 +371,7 @@ export default function IncidentDetail({ incidents }) {
               return (
                 <div key={step.step_number} className="relative slide-in">
                   {/* Circle Step indicator */}
-                  <span className="absolute -left-[35px] top-0.5 flex items-center justify-center w-5 h-5 rounded-full bg-sentinel-dark border border-sentinel-border text-[10px] font-bold text-sentinel-cyan">
+                  <span className="absolute -left-[35px] top-0.5 flex items-center justify-center w-5 h-5 rounded-full bg-aegis-dark border border-aegis-border text-[10px] font-bold text-aegis-cyan">
                     {step.step_number}
                   </span>
 
@@ -380,20 +380,20 @@ export default function IncidentDetail({ incidents }) {
                       <span className="font-bold text-white font-mono">
                         {step.tool_name}
                       </span>
-                      <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-white/5 text-sentinel-gray border border-white/5">
+                      <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-white/5 text-aegis-gray border border-white/5">
                         {step.latency_ms}ms
                       </span>
                     </div>
 
-                    <div className="bg-black/20 p-2 rounded border border-sentinel-border/30 text-[11px] leading-relaxed">
+                    <div className="bg-black/20 p-2 rounded border border-aegis-border/30 text-[11px] leading-relaxed">
                       <div className="text-[10px]">
-                        <span className="text-sentinel-yellow font-semibold">Args:</span>{' '}
+                        <span className="text-aegis-yellow font-semibold">Args:</span>{' '}
                         <code className="text-gray-300 font-mono">
                           {JSON.stringify(step.tool_input)}
                         </code>
                       </div>
-                      <div className="mt-1 border-t border-sentinel-border/20 pt-1">
-                        <span className="text-sentinel-gray font-semibold">Result:</span>
+                      <div className="mt-1 border-t border-aegis-border/20 pt-1">
+                        <span className="text-aegis-gray font-semibold">Result:</span>
                         <p className="text-gray-400 font-mono max-h-24 overflow-y-auto mt-0.5 text-[10px]">
                           {step.tool_output}
                         </p>
