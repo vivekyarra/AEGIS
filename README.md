@@ -1,8 +1,7 @@
 # AEGIS 🛡️
 ### Autonomous Incident Response Agent — 0 to Resolved in Under 90 Seconds
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Click_Here-00d4ff?style=for-the-badge)](https://aegis.vercel.app)
-[![Demo Video](https://img.shields.io/badge/▶_Demo_Video-YouTube-FF0000?style=for-the-badge&logo=youtube)](https://youtube.com/watch?v=placeholder)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Click_Here-00d4ff?style=for-the-badge)](https://aegis-navy-three.vercel.app)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/Frontend-React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org)
 [![Gemini](https://img.shields.io/badge/AI-Gemini_2.0_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini)
@@ -129,10 +128,10 @@ Arize is the **agent quality monitor** — ensuring the AI makes good decisions.
 
 | Service | URL |
 |---------|-----|
-| 🚀 Live Dashboard | [aegis.vercel.app](https://aegis.vercel.app) |
-| 🔴 Demo Control | [aegis.vercel.app/demo](https://aegis.vercel.app/demo) |
-| 🔌 Backend API | [aegis-backend-xxxx.run.app](https://aegis-backend-xxxx.run.app) |
-| ▶ Demo Video | [YouTube Link](https://youtube.com/watch?v=placeholder) |
+| 🚀 Live Dashboard | [aegis-navy-three.vercel.app](https://aegis-navy-three.vercel.app) |
+| 🔴 Demo Control | [aegis-navy-three.vercel.app/demo](https://aegis-navy-three.vercel.app/demo) |
+| 🔌 Backend API | [aegis-backend-pexdaro4dq-uc.a.run.app](https://aegis-backend-pexdaro4dq-uc.a.run.app) |
+| 🛒 ShopStream API | [aegis-shopstream-pexdaro4dq-uc.a.run.app](https://aegis-shopstream-pexdaro4dq-uc.a.run.app) |
 
 ### 90-Second Demo Script
 1. Open the **Demo Control** page
@@ -187,36 +186,20 @@ cd apps/frontend && npm install && npm run dev
 
 ### Environment Setup
 
-Copy `.env.example` files and fill in your credentials:
+Copy `.env.example` files and fill in private values locally. Do not commit `.env`, `.env.master`, service-account JSON, or local secret files.
 
 ```bash
 cp apps/backend/.env.example apps/backend/.env
 cp apps/frontend/.env.example apps/frontend/.env
 ```
 
-**`apps/backend/.env`:**
-```env
-GCP_PROJECT_ID=your-project-id
-GCP_REGION=us-central1
-GOOGLE_APPLICATION_CREDENTIALS=./gcp-key.json
-DYNATRACE_URL=https://YOUR_ENV_ID.live.dynatrace.com
-DYNATRACE_TOKEN=YOUR_TOKEN_HERE
-DYNATRACE_ENV_ID=YOUR_ENV_ID
-MONGODB_URI=YOUR_MONGODB_CONNECTION_STRING
-MONGODB_DB=aegis
-GITLAB_URL=https://gitlab.com
-GITLAB_TOKEN=YOUR_TOKEN_HERE
-GITLAB_PROJECT_ID=YOUR_PROJECT_ID
-ARIZE_API_KEY=YOUR_KEY_HERE
-ARIZE_SPACE_ID=YOUR_SPACE_ID
-```
+For local development, use the checked-in `.env.example` files as the list of required variable names. Production currently uses:
 
-**`apps/frontend/.env`:**
-```env
-VITE_BACKEND_URL=http://localhost:8080
-VITE_SHOPSTREAM_URL=http://localhost:9090
-VITE_WS_URL=ws://localhost:8080/ws
-```
+| Variable | Production value |
+|----------|------------------|
+| `VITE_BACKEND_URL` | `https://aegis-backend-pexdaro4dq-uc.a.run.app` |
+| `VITE_SHOPSTREAM_URL` | `https://aegis-shopstream-pexdaro4dq-uc.a.run.app` |
+| `VITE_WS_URL` | `wss://aegis-backend-pexdaro4dq-uc.a.run.app/ws` |
 
 ---
 
@@ -248,37 +231,19 @@ curl -X POST http://localhost:8080/webhook/test \
 
 ## 🚀 Production Deployment
 
-```bash
-# Authenticate
-gcloud auth login && gcloud config set project YOUR_PROJECT_ID
+Current production endpoints:
 
-# Deploy ShopStream
-cd apps/shopstream
-gcloud run deploy shopstream --source . --region us-central1 \
-  --allow-unauthenticated --port 9090 --memory 512Mi
+| Service | URL |
+|---------|-----|
+| Frontend | `https://aegis-navy-three.vercel.app` |
+| Backend | `https://aegis-backend-pexdaro4dq-uc.a.run.app` |
+| ShopStream | `https://aegis-shopstream-pexdaro4dq-uc.a.run.app` |
 
-# Deploy Backend (replace env var values)
-cd ../backend
-gcloud run deploy aegis-backend --source . --region us-central1 \
-  --allow-unauthenticated --port 8080 --memory 1Gi \
-  --set-env-vars="GCP_PROJECT_ID=YOUR_PROJECT_ID,DYNATRACE_URL=YOUR_DT_URL,DYNATRACE_TOKEN=YOUR_DT_TOKEN,DYNATRACE_ENV_ID=YOUR_DT_ENV_ID,MONGODB_URI=YOUR_MONGODB_URI,MONGODB_DB=aegis,GITLAB_URL=https://gitlab.com,GITLAB_TOKEN=YOUR_GITLAB_TOKEN,GITLAB_PROJECT_PATH=your_project_path,GITLAB_PROJECT_ID=YOUR_GITLAB_PROJECT_ID,ARIZE_API_KEY=YOUR_ARIZE_KEY,ARIZE_SPACE_ID=YOUR_ARIZE_SPACE_ID"
-
-# Deploy Frontend
-cd ../frontend
-npx vercel --prod
-```
+Deploy scripts live in `deploy/`. Keep production secrets in local environment variables or the deployment platform, not in README or committed files.
 
 ### Register Dynatrace Webhook
 ```bash
-curl -X POST "https://YOUR_ENV.live.dynatrace.com/api/v1/integrations/webhooks" \
-  -H "Authorization: Api-Token YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "AEGIS",
-    "url": "https://YOUR_BACKEND.run.app/webhook/dynatrace",
-    "active": true,
-    "payload": "{\"ProblemID\":\"{ProblemID}\",\"ProblemTitle\":\"{ProblemTitle}\",\"State\":\"{State}\",\"ProblemSeverity\":\"{ProblemSeverity}\",\"ImpactedEntities\":\"{ImpactedEntities}\"}"
-  }'
+BACKEND_URL=https://aegis-backend-pexdaro4dq-uc.a.run.app deploy/setup-dynatrace-webhook.sh
 ```
 
 ---
